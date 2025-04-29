@@ -429,6 +429,54 @@
             padding: 0.2rem 0.4rem;
             border-radius: 4px;
         }
+
+        /* Coin Feature Spotlight */
+        .spotlight {
+            background: linear-gradient(135deg, rgba(224, 168, 13, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+            border: 1px solid rgba(224, 168, 13, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px rgba(224, 168, 13, 0.2);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(224, 168, 13, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(224, 168, 13, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(224, 168, 13, 0.2); }
+        }
+
+        .spotlight-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .spotlight-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+
+        .spotlight-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .spotlight-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .spotlight-note {
+            font-style: italic;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -444,16 +492,16 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="version-dropdown">
-                    <div class="version-dropdown-item active">
+                    <div class="version-dropdown-item active" data-version="version-1-00-2">
                         V1.00.2
                         <span class="date">April 29, 2025</span>
                         <span class="version-badge">LATEST</span>
                     </div>
-                    <div class="version-dropdown-item">
+                    <div class="version-dropdown-item" data-version="version-1-00-1">
                         V1.00.1
                         <span class="date">April 15, 2025</span>
                     </div>
-                    <div class="version-dropdown-item">
+                    <div class="version-dropdown-item" data-version="version-1-00-0">
                         V1.00.0
                         <span class="date">April 1, 2025</span>
                     </div>
@@ -473,9 +521,28 @@
                 </div>
             </div>
             
-            <!-- V1.00.2 -->
+            <!-- V1.00.2 - COIN UPDATE -->
             <div class="tab-content active" id="version-1-00-2">
                 <div class="patch-body">
+                    <!-- Coin Spotlight -->
+                    <div class="spotlight">
+                        <div class="spotlight-header">
+                            <div class="spotlight-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div class="spotlight-title">
+                                Wait...IS THAT A COIN!
+                            </div>
+                        </div>
+                        <div class="spotlight-desc">
+                            Introducing rare collectible coins scattered throughout the world of Ares. 
+                            Find these hidden treasures as you explore and unlock special rewards!
+                        </div>
+                        <div class="spotlight-note">
+                            (These are rare for now!)
+                        </div>
+                    </div>
+                    
                     <div class="section">
                         <div class="section-header">
                             <div class="section-icon">
@@ -683,7 +750,10 @@
         const versionDropdown = document.querySelector('.version-dropdown');
         const versionItems = document.querySelectorAll('.version-dropdown-item');
         const tabContents = document.querySelectorAll('.tab-content');
+        const buildBadge = document.querySelector('.build-badge');
+        const patchDate = document.querySelector('.patch-date i');
         
+        // Open/close dropdown when clicking the button
         versionSelectBtn.addEventListener('click', () => {
             versionSelectBtn.classList.toggle('active');
             versionDropdown.classList.toggle('show');
@@ -697,14 +767,27 @@
             }
         });
         
-        // Version selection
+        // Version selection functionality
         versionItems.forEach(item => {
             item.addEventListener('click', () => {
-                const version = item.textContent.trim().split(' ')[0]; // Get version part
+                // Get version text and ID
+                const versionText = item.textContent.trim().split(' ')[0]; // Get version part
+                const versionId = item.getAttribute('data-version');
                 
                 // Update button text
-                versionSelectBtn.innerHTML = `${version} ${item.classList.contains('active') ? '(Current)' : ''}
-                    <i class="fas fa-chevron-down"></i>`;
+                if (versionText === 'V1.00.2') {
+                    versionSelectBtn.innerHTML = `${versionText} (Current) <i class="fas fa-chevron-down"></i>`;
+                    buildBadge.textContent = '1.00.2.458';
+                    patchDate.parentElement.innerHTML = '<i class="far fa-calendar-alt"></i> Released April 29, 2025';
+                } else if (versionText === 'V1.00.1') {
+                    versionSelectBtn.innerHTML = `${versionText} <i class="fas fa-chevron-down"></i>`;
+                    buildBadge.textContent = '1.00.1.325';
+                    patchDate.parentElement.innerHTML = '<i class="far fa-calendar-alt"></i> Released April 15, 2025';
+                } else {
+                    versionSelectBtn.innerHTML = `${versionText} <i class="fas fa-chevron-down"></i>`;
+                    buildBadge.textContent = '1.00.0.214';
+                    patchDate.parentElement.innerHTML = '<i class="far fa-calendar-alt"></i> Released April 1, 2025';
+                }
                 
                 // Update active state in dropdown
                 versionItems.forEach(vItem => vItem.classList.remove('active'));
@@ -712,12 +795,11 @@
                 
                 // Show corresponding tab
                 tabContents.forEach(tab => tab.classList.remove('active'));
-                const tabId = `version-${version.replace(/\./g, '-')}`;
-                document.getElementById(tabId).classList.add('active');
+                document.getElementById(versionId).classList.add('active');
                 
                 // Update header info
                 const patchTitle = document.querySelector('.patch-title');
-                patchTitle.innerHTML = `Patch Notes <span class="version-chip">${version}</span>`;
+                patchTitle.innerHTML = `Patch Notes <span class="version-chip">${versionText}</span>`;
                 
                 // Close dropdown
                 versionDropdown.classList.remove('show');
