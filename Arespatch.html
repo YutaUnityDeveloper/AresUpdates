@@ -771,6 +771,21 @@
             left: 0;
             color: var(--primary);
         }
+    
+        /* Badge for new updates */
+        .new-update-badge {
+            display: inline-block;
+            margin-left: 0.6rem;
+            background-color: var(--accent);
+            color: #fff;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            border-radius: 4px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
     </style>
 </head>
 <body>
@@ -781,15 +796,17 @@
                 <div class="brand">ARES</div>
             </div>
             <div class="version-select">
-                <div class="version-select-btn">
-                    V1.00.2 (Current)
-                    <i class="fas fa-chevron-down"></i>
-                </div>
+                <div class="version-select-btn">V1.00.3 (Current) <i class="fas fa-chevron-down"></i></div>
                 <div class="version-dropdown">
-                    <div class="version-dropdown-item active" data-version="version-1-00-2">
+                    
+                    <div class="version-dropdown-item active" data-version="version-1-00-3">
+                        V1.00.3<span class="new-update-badge">New</span>
+                        <span class="date">May 1, 2025</span>
+                        <span class="version-badge">LATEST</span>
+                    </div>
+                    <div class="version-dropdown-item" data-version="version-1-00-2">
                         V1.00.2
                         <span class="date">April 29, 2025</span>
-                        <span class="version-badge">LATEST</span>
                     </div>
                     <div class="version-dropdown-item" data-version="version-1-00-1">
                         V1.00.1
@@ -816,7 +833,26 @@
             </div>
             
             <!-- V1.00.2 - COIN UPDATE -->
-            <div class="tab-content active" id="version-1-00-2">
+            
+            <!-- V1.00.3 -->
+            <div class="tab-content active" id="version-1-00-3">
+                <div class="patch-body">
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-icon"><i class="fas fa-star"></i></div>
+                            <div class="section-title">🔧 New Update Highlights</div>
+                        </div>
+                        <ul class="item-list">
+                            <li class="item new-item">Added <strong>Komodo D5 Assault Rifle</strong></li>
+                            <li class="item new-item">Added <strong>AR15 Style Owner Edition AR</strong></li>
+                            <li class="item">Logos are now visible and finalized across menus and scenes</li>
+                            <li class="item">Gameplay trailer video coming soon</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="version-1-00-2">
                 <div class="patch-body">
                     <!-- Donation Section -->
                     <div class="donation-container">
@@ -834,11 +870,11 @@
                             <div class="donation-goal">
                                 <div class="goal-header">
                                     <div class="goal-title">Development Fund Goal</div>
-                                    <div class="goal-amount">0 / $1,000</div>
+                                    <div class="goal-amount">$280 / $1,000</div>
                                 </div>
                                 <div class="goal-progress-container">
                                     <div class="goal-progress-bar" style="width: 28%"></div>
-                                    <div class="goal-progress-label">0%</div>
+                                    <div class="goal-progress-label">28%</div>
                                 </div>
                                 <div class="goal-description">
                                     Funds will be used for new weapons development, maps, features and much more!
@@ -1157,7 +1193,12 @@
                 const versionId = item.getAttribute('data-version');
                 
                 // Update button text
-                if (versionText === 'V1.00.2') {
+                
+                if (versionText === 'V1.00.3') {
+                    versionSelectBtn.innerHTML = `${versionText} (Current) <i class="fas fa-chevron-down"></i>`;
+                    buildBadge.textContent = '1.00.3.501';
+                    document.querySelector('.patch-date').innerHTML = '<i class="far fa-calendar-alt"></i> Released May 1, 2025';
+                } else if (versionText === 'V1.00.2') {
                     versionSelectBtn.innerHTML = `${versionText} (Current) <i class="fas fa-chevron-down"></i>`;
                     buildBadge.textContent = '1.00.2.458';
                     document.querySelector('.patch-date').innerHTML = '<i class="far fa-calendar-alt"></i> Released April 29, 2025';
